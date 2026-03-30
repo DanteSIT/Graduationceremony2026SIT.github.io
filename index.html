@@ -10,10 +10,7 @@
       --grad-top:    #0a0a0a;
       --grad-bottom: #1a1a1a;
 
-      /* ── YOUR IMAGE ──────────────────────────
-         Set path below. Adjust opacity 0–1.
-      ──────────────────────────────────────── */
-      --bg-image:   url('https://statehouse.gov.sc/uploads/news/2025/6433_wPebkz8mx.jpg'); /* ← replace */
+      --bg-image:   url('https://statehouse.gov.sc/uploads/news/2025/6433_wPebkz8mx.jpg'); /*miss liza might have a better quality image */
       --bg-opacity: 0.12;
     }
 
@@ -133,11 +130,11 @@
     <h1>File Download</h1>
     <p class="sub">Your download will begin automatically.<br />If it doesn't, click the button below.</p>
 
-    <div class="status" id="status">[ Starting download... ]</div>
+    <div class="status" id="status">[ Download starting in <span id="countdown">5</span>s ]</div>
 
     <hr />
 
-    <a href="YOUR_FILE_HERE.zip" download id="manualBtn" class="btn">
+    <a href="graduation.pdf" download id="manualBtn" class="btn">
       Download manually
     </a>
 
@@ -149,25 +146,34 @@
 
   <script>
     // ── CONFIG ───────────────────────────────
-    const FILE_URL  = 'YOUR_FILE_HERE.zip'; // ← file path / URL
-    const FILE_NAME = 'download.zip';        // ← save-as filename
-    // ─────────────────────────────────────────
+    const FILE_URL  = 'graduation.pdf';        //the path or url depending on how i get the files
+    const FILE_NAME = 'graduation.jpg';       // filename when downloaded
+
 
     const status    = document.getElementById('status');
+    const countdown = document.getElementById('countdown');
     const manualBtn = document.getElementById('manualBtn');
 
     window.addEventListener('load', () => {
-      setTimeout(() => {
-        try {
-          const a = document.createElement('a');
-          a.href = FILE_URL; a.download = FILE_NAME;
-          document.body.appendChild(a); a.click(); document.body.removeChild(a);
-          status.textContent = '[ Download started ]';
-        } catch(e) {
-          status.textContent = '[ Auto-download failed — use button below ]';
-          status.classList.add('error');
+      let seconds = 5;
+
+      const interval = setInterval(() => {
+        seconds--;
+        if (seconds > 0) {
+          countdown.textContent = seconds;
+        } else {
+          clearInterval(interval);
+          try {
+            const a = document.createElement('a');
+            a.href = FILE_URL; a.download = FILE_NAME;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            status.textContent = '[ Download started ]';
+          } catch(e) {
+            status.textContent = '[ Auto-download failed — use button below ]';
+            status.classList.add('error');
+          }
         }
-      }, 800);
+      }, 1000);
     });
 
     manualBtn.addEventListener('click', () => {
