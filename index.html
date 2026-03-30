@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --grad-top:    #0a0a0a;
+      --grad-bottom: #1a1a1a;
+
+      /* ── YOUR IMAGE ──────────────────────────
+         Set path below. Adjust opacity 0–1.
+      ──────────────────────────────────────── */
+      --bg-image:   url('https://statehouse.gov.sc/uploads/news/2025/6433_wPebkz8mx.jpg'); /* ← replace */
+      --bg-opacity: 0.12;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, var(--grad-top), var(--grad-bottom));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Share Tech Mono', "Courier New", monospace;
+      color: #ffffff;
+      position: relative;
+    }
+
+    /* Background image overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: var(--bg-image) center/cover no-repeat;
+      opacity: var(--bg-opacity);
+      pointer-events: none;
+    }
+
+    .box {
+      position: relative;
+      z-index: 1;
+      width: min(420px, 90vw);
+      border: 1px solid #f5c400;
+      padding: 40px 36px;
+      background: rgba(0,0,0,0.80);
+      text-align: center;
+    }
+
+    /* Yellow top accent bar */
+    .box::before {
+      content: '';
+      display: block;
+      height: 3px;
+      background: #f5c400;
+      margin: -40px -36px 32px;
+    }
+
+    .school-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #f5c400;
+      margin-bottom: 18px;
+    }
+
+    .box hr {
+      border: none;
+      border-top: 1px solid #2a2a2a;
+      margin: 24px 0;
+    }
+
+    h1 {
+      font-size: 1rem;
+      font-weight: normal;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .sub {
+      font-size: 0.78rem;
+      color: #888;
+      line-height: 1.7;
+    }
+
+    .status {
+      font-size: 0.8rem;
+      color: #f5c400;
+      margin: 20px 0 0;
+      letter-spacing: 0.05em;
+    }
+
+    .status.error { color: #eb5757; }
+
+    .btn {
+      display: inline-block;
+      margin-top: 24px;
+      padding: 11px 28px;
+      border: 1px solid #f5c400;
+      background: transparent;
+      color: #f5c400;
+      font-family: 'Share Tech Mono', "Courier New", monospace;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn:hover {
+      background: #f5c400;
+      color: #000;
+    }
+
+    .note {
+      font-size: 0.72rem;
+      color: #555;
+      margin-top: 20px;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <p class="school-label">Seychelles Institute of Technology</p>
+    <h1>File Download</h1>
+    <p class="sub">Your download will begin automatically.<br />If it doesn't, click the button below.</p>
+
+    <div class="status" id="status">[ Starting download... ]</div>
+
+    <hr />
+
+    <a href="YOUR_FILE_HERE.zip" download id="manualBtn" class="btn">
+      Download manually
+    </a>
+
+    <p class="note">
+      If the download is blocked, check your browser's<br />
+      download permissions and try again.
+    </p>
+  </div>
+
+  <script>
+    // ── CONFIG ───────────────────────────────
+    const FILE_URL  = 'YOUR_FILE_HERE.zip'; // ← file path / URL
+    const FILE_NAME = 'download.zip';        // ← save-as filename
+    // ─────────────────────────────────────────
+
+    const status    = document.getElementById('status');
+    const manualBtn = document.getElementById('manualBtn');
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        try {
+          const a = document.createElement('a');
+          a.href = FILE_URL; a.download = FILE_NAME;
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+          status.textContent = '[ Download started ]';
+        } catch(e) {
+          status.textContent = '[ Auto-download failed — use button below ]';
+          status.classList.add('error');
+        }
+      }, 800);
+    });
+
+    manualBtn.addEventListener('click', () => {
+      status.textContent = '[ Download started ]';
+      status.classList.remove('error');
+    });
+  </script>
+
+</body>
+</html>
